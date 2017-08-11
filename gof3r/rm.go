@@ -6,7 +6,8 @@ import (
 	"net/url"
 	"os"
 
-	"github.com/rlmcpherson/s3gof3r"
+	//"github.com/rlmcpherson/s3gof3r"
+	"../../s3gof3r"
 )
 
 type rmOpts struct {
