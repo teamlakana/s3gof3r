@@ -1,0 +1,31 @@
+diff --git a/url.go b/url.go
+index 42a514b..9509a7e 100644
+--- a/url.go
++++ b/url.go
+@@ -134,12 +134,12 @@ func shouldEscape(c byte, mode encoding) bool {
+ 			// meaning to individual path segments. This package
+ 			// only manipulates the path as a whole, so we allow those
+ 			// last three as well. That leaves only ? to escape.
+-			return c == '?'
++			return c == '?' || c == '+'
+
+ 		case encodePathSegment: // §3.3
+ 			// The RFC allows : @ & = + $ but saves / ; , for assigning
+ 			// meaning to individual path segments.
+-			return c == '/' || c == ';' || c == ',' || c == '?'
++			return c == '/' || c == ';' || c == ',' || c == '?' || c == '+'
+
+ 		case encodeUserPassword: // §3.2.1
+ 			// The RFC allows ';', ':', '&', '=', '+', '$', and ',' in
+@@ -295,6 +295,11 @@ func escape(s string, mode encoding) string {
+ 		case c == ' ' && mode == encodeQueryComponent:
+ 			t[j] = '+'
+ 			j++
++		case c == '+' && mode == encodePathSegment:
++			t[j] = '%'
++			t[j+1] = '2'
++			t[j+2] = 'B'
++			j += 3
+ 		case shouldEscape(c, mode):
+ 			t[j] = '%'
+ 			t[j+1] = "0123456789ABCDEF"[c>>4]

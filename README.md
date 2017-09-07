@@ -1,3 +1,5 @@
+# IMPORTANT. Please apply path net_url.go.diff to stdlib net/url. This path fixes + (plus) sign behaviour of the path part of a S3 URL.
+
 # s3gof3r  [![Build Status](https://travis-ci.org/rlmcpherson/s3gof3r.svg?branch=master)](https://travis-ci.org/rlmcpherson/s3gof3r) [![GoDoc](https://godoc.org/github.com/rlmcpherson/s3gof3r?status.png)](https://godoc.org/github.com/rlmcpherson/s3gof3r)
 
 s3gof3r provides fast, parallelized, pipelined streaming access to Amazon S3. It includes a command-line interface: `gof3r`.
@@ -5,7 +7,7 @@ s3gof3r provides fast, parallelized, pipelined streaming access to Amazon S3. It
 It is optimized for high speed transfer of large objects into and out of Amazon S3. Streaming support allows for usage like:
 
 ```
-  $ tar -czf - <my_dir/> | gof3r put -b <s3_bucket> -k <s3_object>    
+  $ tar -czf - <my_dir/> | gof3r put -b <s3_bucket> -k <s3_object>
   $ gof3r get -b <s3_bucket> -k <s3_object> | tar -zx
 ```
 
@@ -18,7 +20,7 @@ On an EC2 instance, gof3r can exceed 1 Gbps for both puts and gets:
   $ gof3r get -b test-bucket -k 8_GB_tar | pv -a | tar -x
   Duration: 53.201632211s
   [ 167MB/s]
-  
+
 
   $ tar -cf - test_dir/ | pv -a | gof3r put -b test-bucket -k 8_GB_tar
   Duration: 1m16.080800315s
@@ -38,7 +40,7 @@ These tests were performed on an m1.xlarge EC2 instance with a virtualized 1 Gig
 
 - *Retry Everything:* All http requests and every part is retried on both uploads and downloads. Requests to S3 frequently time out, especially under high load, so this is essential to complete large uploads or downloads.
 
-- *Memory Efficiency:* Memory used to upload and download parts is recycled. For an upload or download with the default concurrency of 10 and part size of 20 MB, the maximum memory usage is less than 300 MB. Memory footprint can be further reduced by reducing part size or concurrency. 
+- *Memory Efficiency:* Memory used to upload and download parts is recycled. For an upload or download with the default concurrency of 10 and part size of 20 MB, the maximum memory usage is less than 300 MB. Memory footprint can be further reduced by reducing part size or concurrency.
 
 
 
@@ -47,7 +49,7 @@ These tests were performed on an m1.xlarge EC2 instance with a virtualized 1 Gig
 s3gof3r is written in Go and requires go 1.5 or later. It can be installed with `go get` to download and compile it from source. To install the command-line tool, `gof3r` set `GO15VENDOREXPERIMENT=1` in your environment:
 
     $ go get github.com/rlmcpherson/s3gof3r/gof3r
-    
+
 To install just the package for use in other Go programs:
 
     $ go get github.com/rlmcpherson/s3gof3r
@@ -84,10 +86,10 @@ gof3r also supports [IAM role](http://docs.aws.amazon.com/AWSEC2/latest/UserGuid
 
   ```
   $ tar -cf - /foo_dir/ | gof3r put -b my_s3_bucket -k bar_dir/s3_object -m x-amz-meta-custom-metadata:abc123 -m x-amz-server-side-encryption:AES256
-  $ gof3r get -b my_s3_bucket -k bar_dir/s3_object | tar -x    
-  ```  
+  $ gof3r get -b my_s3_bucket -k bar_dir/s3_object | tar -x
+  ```
   **see the [gof3r man page](http://randallmcpherson.com/gof3r.html) for complete usage**
- 
+
 ## Documentation
 
 **s3gof3r package:** See the [godocs](http://godoc.org/github.com/rlmcpherson/s3gof3r) for api documentation.

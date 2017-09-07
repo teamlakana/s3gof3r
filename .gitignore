@@ -1,5 +1,7 @@
 *.mprof
 *.out
 .env
+tmp/*
 gof3r/gof3r
-
+gof3r/tmp/*
+gof3r/build/*
