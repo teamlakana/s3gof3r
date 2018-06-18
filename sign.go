@@ -131,6 +131,7 @@ func (s *signer) buildCanonicalString() {
 	uri = strings.Replace(uri, "&", "%26", -1)
 	uri = strings.Replace(uri, "$", "%24", -1)
 	uri = strings.Replace(uri, "+", "%20", -1)
+	uri = strings.Replace(uri, "=", "%3D", -1)
 
 	s.canonicalString = strings.Join([]string{
 		s.Request.Method,
